@@ -1,6 +1,8 @@
 ## DynamicMap
 Dynamic mapping of object to anonymous type with support of Json.Net and complex objects, Similar to AutoMapper library but with support of dynamic types.
 
+[Nuget packge](https://www.nuget.org/packages/DynamicMap/1.0.0)
+
 ```csharp
 // Create new dummy object
 var obj = new DummyClass();
