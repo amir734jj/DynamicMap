@@ -1,0 +1,14 @@
+
+\.vs/
+
+\.idea/
+
+\.DS_Store
+
+DynamicMap/bin/
+
+DynamicMap/obj/
+
+DynamicMap\.Tests/bin/
+
+DynamicMap\.Tests/obj/
