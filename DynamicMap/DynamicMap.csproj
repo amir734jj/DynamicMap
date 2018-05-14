@@ -3,6 +3,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Dynamic mapping of object to anonymous type with support of Json.Net and complex objects</Description>
+    <PackageProjectUrl>https://github.com/amir734jj/DynamicMap</PackageProjectUrl>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <Optimize>false</Optimize>
