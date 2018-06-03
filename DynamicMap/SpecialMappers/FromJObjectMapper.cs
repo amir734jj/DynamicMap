@@ -12,9 +12,9 @@ namespace DynamicMap.SpecialMappers
     {
         public new ISpecialMapper New() => new FromJObjectMapper();
 
-        public bool MatchingMapper(Type destinationType, Type sourceType, object obj)
+        public bool MatchingMapper(Type destinationType, Type sourceType, object sourceObj)
         {
-            switch (obj)
+            switch (sourceObj)
             {
                 case JObject _:
                     return true;

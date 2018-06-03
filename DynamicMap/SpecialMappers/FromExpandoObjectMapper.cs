@@ -10,9 +10,9 @@ namespace DynamicMap.SpecialMappers
 {
     public class FromExpandoObjectMapper: BaseDynamicMap, ISpecialMapper
     {
-        public bool MatchingMapper(Type destinationType, Type sourceType, object obj)
+        public bool MatchingMapper(Type destinationType, Type sourceType, object sourceObj)
         {
-            switch (obj)
+            switch (sourceObj)
             {
                 case IDictionary<string, object> _ when destinationType != typeof(IDictionary<string, object>):
                     return true;

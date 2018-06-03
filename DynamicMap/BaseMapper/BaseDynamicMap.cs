@@ -16,8 +16,8 @@ namespace DynamicMap.BaseMapper
         protected Type _sourceType;
         protected Type _destinationType;
         protected object _sourceObj;
-        protected IEnumerable<PropertyInfoStructSource> _sourceToPropertyInfoStruct;
-        protected IEnumerable<PropertyInfoStructDestination> _destinationToPropertyInfoStruct;
+        protected IEnumerable<PropertyInfoStructSource> _sourcePropertyInfoStruct;
+        protected IEnumerable<PropertyInfoStructDestination> _destinationPropertyInfoStruct;
         protected object _result;
 
         /// <summary>
@@ -105,11 +105,11 @@ namespace DynamicMap.BaseMapper
         /// <returns></returns>
         public virtual Dictionary<PropertyInfoStructDestination, PropertyInfoStructSource> MappingDictionary()
         {
-            _sourceToPropertyInfoStruct = SourceToPropertyInfoStruct();
-            _destinationToPropertyInfoStruct = DestinationToPropertyInfoStruct();
+            _sourcePropertyInfoStruct = SourceToPropertyInfoStruct();
+            _destinationPropertyInfoStruct = DestinationToPropertyInfoStruct();
 
-            return _destinationToPropertyInfoStruct.ToDictionary(x => x, x =>
-                _sourceToPropertyInfoStruct.FirstOrDefault(p => x.Name == p.Name))
+            return _destinationPropertyInfoStruct.ToDictionary(x => x, x =>
+                _sourcePropertyInfoStruct.FirstOrDefault(p => x.Name == p.Name))
                 .Where(x => x.Value.Name != null)
                 .ToDictionary(x => x.Key, x => x.Value);
         }
