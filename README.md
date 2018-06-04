@@ -16,5 +16,29 @@ var result = DynamicMap.Map(typeof(DummyNestedClass), json);
 // Assert result is equal to original object
 Assert.Equal(result, obj);
 ```
+I re-designed the whole library in version 2.0, it is more modular now. It is not more similar to popular mapping library, [AutoMapper](https://automapper.org/). This is in way comparable to the extensive features of AutoMapper but it gets the job done for simple POCOs, even nested ones with complex IEnumerable properties.
 
-Note that Mapper accepts optional parameter of type: `Dictionary<Type, Func<object, object>>` which can be used to get original object property value manually.
+As of version 2.0, to add a custom mapping profile, library requires creating a class that extends `ISpecialMapper`. Something like this:
+
+```csharp
+public class CustomClassSpecialMapper: BaseDynamicMap, ISpecialMapper
+{
+  // returns new instance of this mapper
+  public new ISpecialMapper New() => new CustomClassSpecialMapper();
+
+  // if true then this mapper will be used
+  public bool MatchingMapper(Type destinationType, Type sourceType, object sourceObj)
+  {
+      return sourceType == typeof(CustomClass);
+  }
+  
+  // Order of custom mapper
+  public int Order() => 4;
+}
+```
+
+Finally, register the custom dynamic mapper
+
+```csharp
+DynamicMap.GetDynamicMapBuilder().RegisterCustomMapper(new CustomClassSpecialMapper()); 
+```
