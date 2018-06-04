@@ -27,6 +27,7 @@ namespace DynamicMap.Builders
             .Where(x => typeof(ISpecialMapper).IsAssignableFrom(x))
             .Select(x => x.Instantiate())
             .Cast<ISpecialMapper>()
+            .OrderBy(x => x.Order())
             .ToHashSet();
             
         /// <summary>
@@ -35,7 +36,7 @@ namespace DynamicMap.Builders
         /// <param name="specialMapper"></param>
         /// <returns></returns>
         public DynamicMapBuilder RegisterCustomMapper(ISpecialMapper specialMapper) => Run(() => _specialMappers.Add(specialMapper), this);
-
+        
         /// <summary>
         /// Recurisve mapper
         /// </summary>
@@ -48,7 +49,7 @@ namespace DynamicMap.Builders
             // test for edge cases
             if (ValidateEdgeCases(destinationType, sourceType, sourceObj, out var result)) return result;
 
-            var mapper = _specialMappers.FirstOrDefault(x => x.MatchingMapper(sourceType, destinationType, sourceObj));
+            var mapper = _specialMappers.FirstOrDefault(x => x.MatchingMapper(destinationType, destinationType, sourceObj));
 
             return mapper != null ? mapper.New().Map(destinationType, sourceType, sourceObj) : _baseMapper.New().Map(destinationType, sourceType, sourceObj);
         }

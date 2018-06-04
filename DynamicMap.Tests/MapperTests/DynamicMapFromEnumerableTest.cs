@@ -1,12 +1,12 @@
 ﻿using AutoFixture;
 using DynamicMap.Tests.Interfaces;
 using DynamicMap.Tests.Models;
-using Newtonsoft.Json;
+using DynamicMap.Tests.Utilities;
 using Xunit;
 
 namespace DynamicMap.Tests.MapperTests
 {
-    public class DynamicMapFromEnumerableTest: IBasicMapperTest
+    public class DynamicMapFromEnumerableTest: AssertExtension, IBasicMapperTest
     {
         private readonly Fixture _fixture;
 
@@ -19,14 +19,13 @@ namespace DynamicMap.Tests.MapperTests
         public void Test__Basic()
         {
             // Arrange
-            var obj = _fixture.Create<EnumerableModel>();
-            var json = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(obj));
-
+            var obj = _fixture.Create<EnumerableModelSource>();
+            
             // Act
-            var result = DynamicMap.Map(typeof(EnumerableModel), json);
-
+            var result = DynamicMap.Map(typeof(EnumerableModelDestination), obj);
+            
             // Assert
-            Assert.Equal(obj, result);
+            Assert(obj, result, new EnumerableModelComparer());
         }
     }
 }

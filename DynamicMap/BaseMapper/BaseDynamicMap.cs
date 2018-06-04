@@ -19,6 +19,7 @@ namespace DynamicMap.BaseMapper
         protected IEnumerable<PropertyInfoStructSource> _sourcePropertyInfoStruct;
         protected IEnumerable<PropertyInfoStructDestination> _destinationPropertyInfoStruct;
         protected object _result;
+        protected Dictionary<PropertyInfoStructDestination, PropertyInfoStructSource> _mappingDictionary;
 
         /// <summary>
         /// Create an object given destination type and do the property mappings
@@ -33,8 +34,9 @@ namespace DynamicMap.BaseMapper
             _sourceType = sourceType;
             _sourceObj = sourceObj;
             _result = _destinationType.Instantiate();
+            _mappingDictionary = MappingDictionary();
             
-            MappingDictionary().ForEach(x =>
+            _mappingDictionary.ForEach(x =>
             {
                 var value = GetPropertyValue(x.Value);
 

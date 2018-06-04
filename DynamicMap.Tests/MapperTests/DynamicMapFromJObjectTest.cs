@@ -1,6 +1,7 @@
 ﻿using AutoFixture;
 using DynamicMap.Tests.Interfaces;
 using DynamicMap.Tests.Models;
+using DynamicMap.Tests.Utilities;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -19,11 +20,11 @@ namespace DynamicMap.Tests.MapperTests
         public void Test__Basic()
         {
             // Arrange
-            var obj = _fixture.Create<ComplexModel>();
+            var obj = _fixture.Create<ComplexModelSource>();
             var json = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(obj));
 
             // Act
-            var result = DynamicMap.Map(typeof(ComplexModel), json);
+            var result = DynamicMap.Map(typeof(ComplexModelSource), json);
 
             // Assert
             Assert.Equal(obj, result);

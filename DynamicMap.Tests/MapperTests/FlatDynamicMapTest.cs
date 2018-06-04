@@ -1,11 +1,12 @@
 ﻿using AutoFixture;
 using DynamicMap.Tests.Interfaces;
 using DynamicMap.Tests.Models;
+using DynamicMap.Tests.Utilities;
 using Xunit;
 
 namespace DynamicMap.Tests.MapperTests
 {
-    public class FlatDynamicMapTest: IBasicMapperTest
+    public class FlatDynamicMapTest: AssertExtension, IBasicMapperTest
     {
         private readonly Fixture _fixture;
 
@@ -15,34 +16,16 @@ namespace DynamicMap.Tests.MapperTests
         }
         
         [Fact]
-        public void Test__FlatModel_TheSameTypes()
-        {
-            // Arrange
-            var obj = _fixture.Create<FlatModel>();
-            
-            // Act
-            var result = DynamicMap.Map(typeof(FlatModel), obj);
-            
-            // Assert
-            Assert.Equal(obj, result);
-        }
-        
-        [Fact]
         public void Test__Basic()
         {
             // Arrange
-            var obj = _fixture.Create<FlatModel>();
+            var obj = _fixture.Create<FlatModelSource>();
             
             // Act
-            var result = DynamicMap.Map(typeof(FlatModel), new
-            {
-                Name = obj.Name,
-                Age = obj.Age,
-                DateOfBith = obj.DateOfBith
-            });
+            var result = DynamicMap.Map(typeof(FlatModelDestination), obj);
             
             // Assert
-            Assert.Equal(obj, result);
+            Assert(obj, result, new FlatModelComparer());
         }
     }
 }

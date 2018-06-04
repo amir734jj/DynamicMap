@@ -4,11 +4,12 @@ using System.Dynamic;
 using AutoFixture;
 using DynamicMap.Tests.Interfaces;
 using DynamicMap.Tests.Models;
+using DynamicMap.Tests.Utilities;
 using Xunit;
 
 namespace DynamicMap.Tests.MapperTests
 {
-    public class DynamicMapFromExpandoObjectTest: IBasicMapperTest
+    public class DynamicMapFromExpandoObjectTest: AssertExtension, IBasicMapperTest
     {
         private readonly Fixture _fixture;
 
@@ -21,7 +22,7 @@ namespace DynamicMap.Tests.MapperTests
         public void Test__Basic()
         {
             // Arrange
-            var expected = _fixture.Create<ComplexModel>();
+            var expected = _fixture.Create<ComplexModelSource>();
             var childObj = new ExpandoObject();
             var childObjDictionary = (IDictionary<string, object>) childObj;
             childObjDictionary["Name"] = expected.ParentInfo.Name;
@@ -36,10 +37,10 @@ namespace DynamicMap.Tests.MapperTests
             rootObjDictionary["ParentInfo"] = expected.ParentInfo;
 
             // Act
-            var result = DynamicMap.Map(typeof(ComplexModel), rootObj);
+            var result = DynamicMap.Map(typeof(ComplexModelDestination), rootObj);
 
             // Assert
-            Assert.Equal(expected, result);
+            Assert(expected, result, new ComplexModelComparer());
         }
     }
 }

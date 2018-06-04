@@ -1,11 +1,12 @@
 ﻿using AutoFixture;
 using DynamicMap.Tests.Interfaces;
 using DynamicMap.Tests.Models;
+using DynamicMap.Tests.Utilities;
 using Xunit;
 
 namespace DynamicMap.Tests.MapperTests
 {
-    public class ComplexDynamicMapTest: IBasicMapperTest
+    public class ComplexDynamicMapTest: AssertExtension, IBasicMapperTest
     {
         private readonly Fixture _fixture;
 
@@ -18,24 +19,13 @@ namespace DynamicMap.Tests.MapperTests
         public void Test__Basic()
         {
             // Arrange
-            var obj = _fixture.Create<ComplexModel>();
-
+            var obj = _fixture.Create<ComplexModelSource>();
+            
             // Act
-            var result = DynamicMap.Map(typeof(ComplexModel), new
-            {
-                Name = obj.Name,
-                Age = obj.Age,
-                DateOfBith = obj.DateOfBith,
-                ParentInfo = new
-                {
-                    Name = obj.ParentInfo.Name,
-                    Age = obj.ParentInfo.Age,
-                    DateOfBith = obj.ParentInfo.DateOfBith
-                }
-            });
+            var result = DynamicMap.Map(typeof(ComplexModelDestination), obj);
             
             // Assert
-            Assert.Equal(obj, result);
+            Assert(obj, result, new ComplexModelComparer());
         }
     }
 }

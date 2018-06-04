@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -59,6 +60,7 @@ namespace DynamicMap.Extensions
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool IsPrimitiveSystemType(this Type type) => type.IsPrimitive || type.IsValueType || type == typeof(string);
+        public static bool IsPrimitiveSystemType(this Type type) => type.IsPrimitive || type.IsValueType || type == typeof(string)
+                                                                    || type.IsIEnumerableType() && type.GetGenericType().IsPrimitiveSystemType();
     }
 }
