@@ -20,7 +20,7 @@ Assert.Equal(result, obj);
 ## Changes as of version 2.0
 I re-designed the whole library in version 2.0, it is more modular now. It is not more similar to popular mapping library, [AutoMapper](https://automapper.org/). This is in way comparable to the extensive features of AutoMapper but it gets the job done for simple POCOs, even nested ones with complex IEnumerable properties.
 
-As of version 2.0, to add a custom mapping profile, library requires creating a class that extends `ISpecialMapper`. Something like this:
+As of version 2.0, to add a custom mapping profile, library requires creating a class that extends `ISpecialMapper`. In the example below, I extended `BaseDynamicMap` as I did not want to implement many other interface methods as well.
 
 ```csharp
 public class CustomClassSpecialMapper: BaseDynamicMap, ISpecialMapper
