@@ -15,5 +15,17 @@ namespace DynamicMap.Extensions
         {
             foreach (var element in enumerable) { action(element); }
         }
+        
+        /// <summary>
+        /// Convert IEnumerable to HashSet
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="comparer"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> source, IEqualityComparer<T> comparer = null)
+        {
+            return new HashSet<T>(source, comparer);
+        }
     }
 }

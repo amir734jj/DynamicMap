@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,5 +54,13 @@ namespace DynamicMap.Extensions
                 .Select(t => t.GenericTypeArguments[0]).FirstOrDefault();
             return enumType ?? type;
         }
+        
+        /// <summary>
+        /// Checks whether if type is pritmive of system type, essentially more advanced version of IsPrimitive
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsPrimitiveSystemType(this Type type) => type.IsPrimitive || type.IsValueType || type == typeof(string)
+                                                                    || type.IsIEnumerableType() && type.GetGenericType().IsPrimitiveSystemType();
     }
 }
