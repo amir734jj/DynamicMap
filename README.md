@@ -25,7 +25,7 @@ As of version 2.0, to add a custom mapping profile, library requires creating a 
 ```csharp
 public class CustomClassSpecialMapper: BaseDynamicMap, ISpecialMapper
 {
-  // returns new instance of this mapper
+  // returns new instance of this mapper, needed due to the recursive nature of this library
   public new ISpecialMapper New() => new CustomClassSpecialMapper();
 
   // if true then this mapper will be used
