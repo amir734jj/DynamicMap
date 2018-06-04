@@ -34,7 +34,7 @@ public class CustomClassSpecialMapper: BaseDynamicMap, ISpecialMapper
       return sourceType == typeof(CustomClass);
   }
   
-  // Order of custom mapper
+  // order of custom mapper
   public int Order() => 4;
 }
 ```
@@ -50,3 +50,5 @@ DynamicMap.GetDynamicMapBuilder().RegisterCustomMapper(new CustomClassSpecialMap
 - List and IEnumerables
 - JObject (`JSON.net`'s dynamic object)
 - ExpandoObjects (essentially `IDictionary<string, object>`)
+
+Note that when `IsComplex` flag is set to `true` on a property of a type, then mapper will run a dynamic map recursively for that specific property. Please see `BaseDynamicMap.cs` for more details.
