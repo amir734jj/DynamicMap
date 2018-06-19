@@ -33,9 +33,16 @@ namespace DynamicMap.BaseMapper
             _destinationType = destinationType;
             _sourceType = sourceType;
             _sourceObj = sourceObj;
+
+            // If Type is primitive then use BasicTypeConverter
+            if (destinationType.IsPrimitiveSystemType())
+            {
+                return BasicTypeConverter(destinationType, sourceObj);
+            }
+
             _result = _destinationType.Instantiate();
             _mappingDictionary = MappingDictionary();
-            
+
             _mappingDictionary.ForEach(x =>
             {
                 var value = GetPropertyValue(x.Value);

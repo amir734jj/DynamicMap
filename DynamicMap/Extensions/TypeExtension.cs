@@ -15,14 +15,14 @@ namespace DynamicMap.Extensions
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool IsSystemType(this Type type) => type.Namespace.StartsWith("System");
+        public static bool IsSystemType(this Type type) => type.Namespace != null && type.Namespace.StartsWith("System");
 
         /// <summary>
         /// Returns true if type is IEnumerable type
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool IsIEnumerableType(this Type type) => type.Namespace.StartsWith("System.Collections");
+        public static bool IsIEnumerableType(this Type type) => type.Namespace != null && type.Namespace.StartsWith("System.Collections");
 
         /// <summary>
         /// Instantiates an object given dynamically defined type

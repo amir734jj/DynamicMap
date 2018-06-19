@@ -17,6 +17,16 @@ namespace DynamicMap
         {
             return MapBuilder.RecursiveMap(destinationType, sourceObj?.GetType(), sourceObj);
         }
+        
+        /// <summary>
+        /// Maps an object of type object to given static type
+        /// </summary>
+        /// <param name="sourceObj"></param>
+        /// <returns></returns>
+        public static T Map<T>(object sourceObj)
+        {
+            return (T) MapBuilder.RecursiveMap(typeof(T), sourceObj?.GetType(), sourceObj) ;
+        }
 
         /// <summary>
         /// Returns the builder
