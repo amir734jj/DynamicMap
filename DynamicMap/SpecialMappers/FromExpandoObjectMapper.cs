@@ -22,7 +22,7 @@ namespace DynamicMap.SpecialMappers
         {
             switch (sourceObj)
             {
-                case IDictionary<string, object> _ when destinationType != typeof(IDictionary<string, object>):
+                case IDictionary<string, object> _ when !typeof(IDictionary<string, object>).IsAssignableFrom(destinationType):
                     return true;
                 default:
                     return false;

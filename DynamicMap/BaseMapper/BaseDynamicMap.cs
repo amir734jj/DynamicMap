@@ -208,6 +208,7 @@ namespace DynamicMap.BaseMapper
         /// <param name="sourceType"></param>
         /// <param name="sourceObj"></param>
         /// <returns></returns>
-        public virtual object LoopBackMapper(Type destinationType, Type sourceType, object sourceObj) => DynamicMap.GetDynamicMapBuilder().RecursiveMap(destinationType, sourceType, sourceObj, _mappingMode);
+        public virtual object LoopBackMapper(Type destinationType, Type sourceType, object sourceObj) => DynamicMap.GetDynamicMapBuilder().RecursiveMap(destinationType, sourceType, sourceObj, destinationObj:
+            (_mappingMode == MappingMode.Merge ? sourceObj : null), mappingMode: _mappingMode);
     }
 }
