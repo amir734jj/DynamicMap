@@ -44,5 +44,57 @@ namespace DynamicMap.Tests.MergerTests
             // Assert
             Xunit.Assert.Equal(expected, result);
         }
+
+        [Fact]
+        public void Test__Complex()
+        {
+            // Arrange 
+            var objs = new List<Dictionary<string, object>>
+            {
+                new Dictionary<string, object>
+                {
+                    {"prop", _fixture.Create<string>()}
+                }
+            };
+            
+            var expected = new Dictionary<string, object>
+            {
+                {"prop", objs.First()["prop"]}
+            };
+
+            // Act
+            var result = DynamicMap.Merge<Dictionary<string, object>>(objs);
+
+            // Assert
+            Xunit.Assert.Equal(expected, result);
+        }
+        
+        [Fact]
+        public void Test__VeryComplex()
+        {
+            // Arrange 
+            var objs = new List<Dictionary<string, object>>
+            {
+                new Dictionary<string, object>
+                {
+                    {"prop", new Dictionary<string, object> { { "nestedProp1", _fixture.Create<string>() }, { "nestedProp", _fixture.Create<string>() }}}
+                },
+                new Dictionary<string, object>
+                {
+                    {"prop", new Dictionary<string, object> { { "nestedProp2", _fixture.Create<string>() }, { "nestedProp", _fixture.Create<string>() }}}
+                }
+            };
+            
+            var expected = new Dictionary<string, object>
+            {
+                {"prop", objs.First()["prop"]}
+            };
+
+            // Act
+            var result = DynamicMap.Merge<Dictionary<string, object>>(objs);
+
+            // Assert
+            Xunit.Assert.Equal(expected, result);
+        } 
     }
 }

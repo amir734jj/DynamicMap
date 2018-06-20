@@ -60,7 +60,7 @@ namespace DynamicMap.SpecialMappers
                             Name = entry.Key.ToString(),
                             PropertyType = entry.Value.GetType(),
                             Getter = () => entry.Value,
-                            IsComplexType = entry.Value != null && !entry.Value.GetType().IsPrimitiveSystemType()
+                            IsComplexType = entry.Value != null && !entry.Value.GetType().IsPrimitiveSystemType() || entry.Value.GetType().IsDictionaryType(out _, out _)
                         });
                     }
                     return retVal;
