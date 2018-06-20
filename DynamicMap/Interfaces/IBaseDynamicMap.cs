@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using DynamicMap.Enums;
 using DynamicMap.Models;
 
 namespace DynamicMap.Interfaces
 {
     public interface IBaseDynamicMap
     {
-        object Map(Type destinationType, Type sourceType, object sourceObj);
+        object Map(MappingMode mappingMode, Type destinationType, Type sourceType, object sourceObj, object destinationObj = null);
 
         IEnumerable<PropertyInfoStructSource> SourceToPropertyInfoStruct();
         

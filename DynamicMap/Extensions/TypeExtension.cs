@@ -62,5 +62,23 @@ namespace DynamicMap.Extensions
         /// <returns></returns>
         public static bool IsPrimitiveSystemType(this Type type) => type.IsPrimitive || type.IsValueType || type == typeof(string)
                                                                     || type.IsIEnumerableType() && type.GetGenericType().IsPrimitiveSystemType();
+
+        /// <summary>
+        /// Checks whether if type is dictionary or not
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="keyType"></param>
+        /// <param name="valueType"></param>
+        /// <returns></returns>
+        public static bool IsDictionaryType(this Type type, out Type keyType, out Type valueType)
+        {
+            var flag = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>);
+
+            var args = type.GetGenericArguments();
+            keyType = args.FirstOrDefault();
+            valueType = args.LastOrDefault();
+
+            return flag;
+        }
     }
 }

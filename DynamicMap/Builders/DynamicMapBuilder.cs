@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DynamicMap.BaseMapper;
+using DynamicMap.Enums;
 using DynamicMap.Extensions;
 using DynamicMap.Interfaces;
 using static DynamicMap.Utilities.LambdaHelper;
@@ -36,24 +37,49 @@ namespace DynamicMap.Builders
         /// <param name="specialMapper"></param>
         /// <returns></returns>
         public DynamicMapBuilder RegisterCustomMapper(ISpecialMapper specialMapper) => Run(() => _specialMappers.Add(specialMapper), this);
-        
+
         /// <summary>
         /// Recurisve mapper
         /// </summary>
         /// <param name="destinationType"></param>
         /// <param name="sourceType"></param>
         /// <param name="sourceObj"></param>
+        /// <param name="destinationObj"></param>
+        /// <param name="mappingMode"></param>
         /// <returns></returns>
-        public object RecursiveMap(Type destinationType, Type sourceType, object sourceObj)
+        public object RecursiveMap(Type destinationType, Type sourceType, object sourceObj, object destinationObj = null, MappingMode mappingMode = MappingMode.Map)
         {
             // test for edge cases
             if (ValidateEdgeCases(destinationType, sourceType, sourceObj, out var result)) return result;
 
             var mapper = _specialMappers.FirstOrDefault(x => x.MatchingMapper(destinationType, destinationType, sourceObj));
 
-            return mapper != null ? mapper.New().Map(destinationType, sourceType, sourceObj) : _baseMapper.New().Map(destinationType, sourceType, sourceObj);
+            return mapper != null ? mapper.New().Map(mappingMode, destinationType, sourceType, sourceObj, destinationObj) : _baseMapper.New().Map(mappingMode, destinationType, sourceType, sourceObj, destinationObj);
         }
 
+        /// <summary>
+        /// Recursively merge the object
+        /// </summary>
+        /// <param name="destinationType"></param>
+        /// <param name="objects"></param>
+        /// <returns></returns>
+        public object RecursiveMerge(Type destinationType, object[] objects)
+        {
+            // if type is null just return null
+            if (destinationType == null) return null;
+
+            if (objects == null || !objects.Any()) return null;
+
+            var destinationObj = destinationType.Instantiate();
+
+            objects.Where(x => x != null).ForEach(x =>
+            {
+                destinationObj = RecursiveMap(destinationType, x.GetType(), x, destinationObj, MappingMode.Merge);
+            });
+
+            return destinationObj;
+        }
+        
         /// <summary>
         /// Special case mappings
         /// </summary>
@@ -78,11 +104,11 @@ namespace DynamicMap.Builders
 
             // no mapping is needed
             // ReSharper disable once InvertIf
-            if (sourceType == destinationType)
-            {
-                result = sourceObj;
-                return true;
-            }
+//            if (sourceType == destinationType)
+//            {
+//                result = sourceObj;
+//                return true;
+//            }
 
             return false;
         }

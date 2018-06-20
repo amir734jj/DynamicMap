@@ -4,8 +4,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Dynamic mapping of object to anonymous type with support of Json.Net and complex objects</Description>
     <PackageProjectUrl>https://github.com/amir734jj/DynamicMap</PackageProjectUrl>
-    <Version>2.0.1</Version>
-    <PackageReleaseNotes>Added support for primitive map.</PackageReleaseNotes>
+    <Version>2.1.0</Version>
+    <PackageReleaseNotes>Added support for Dictionaries and Merge opertation</PackageReleaseNotes>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <Optimize>false</Optimize>

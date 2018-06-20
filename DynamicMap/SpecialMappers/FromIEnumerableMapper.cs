@@ -43,7 +43,7 @@ namespace DynamicMap.SpecialMappers
         /// Order of this ISpecialMapper, needed as JObject and ExpandoObject are both IEnumerables too
         /// </summary>
         /// <returns></returns>
-        public int Order() => 3;
+        public int Order() => 4;
 
         /// <summary>
         /// Treat source IEnumerable as a field
