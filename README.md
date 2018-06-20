@@ -52,3 +52,9 @@ DynamicMap.GetDynamicMapBuilder().RegisterCustomMapper(new CustomClassSpecialMap
 - ExpandoObjects (essentially `IDictionary<string, object>`)
 
 Note that when `IsComplex` flag is set to `true` on a property of a type, then mapper will run a dynamic map recursively for that specific property. Please see `BaseDynamicMap.cs` for more details.
+
+
+## Release notes:
+- Added support for mapping of primitives
+- Added support for `IDictionary`
+- Added support for merge array of objects into one type

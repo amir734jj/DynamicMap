@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using DynamicMap.Builders;
+using DynamicMap.Enums;
 using DynamicMap.Extensions;
 using DynamicMap.Interfaces;
 using DynamicMap.Models;
@@ -20,22 +21,35 @@ namespace DynamicMap.BaseMapper
         protected IEnumerable<PropertyInfoStructDestination> _destinationPropertyInfoStruct;
         protected object _result;
         protected Dictionary<PropertyInfoStructDestination, PropertyInfoStructSource> _mappingDictionary;
+        private MappingMode _mappingMode;
 
         /// <summary>
         /// Create an object given destination type and do the property mappings
         /// </summary>
+        /// <param name="mappingMode"></param>
         /// <param name="destinationType"></param>
         /// <param name="sourceType"></param>
         /// <param name="sourceObj"></param>
+        /// <param name="destinationObj"></param>
         /// <returns></returns>
-        public virtual object Map(Type destinationType, Type sourceType, object sourceObj)
+        public virtual object Map(MappingMode mappingMode, Type destinationType, Type sourceType, object sourceObj, object destinationObj = null)
         {
+            _mappingMode = mappingMode;
             _destinationType = destinationType;
             _sourceType = sourceType;
             _sourceObj = sourceObj;
-            _result = _destinationType.Instantiate();
-            _mappingDictionary = MappingDictionary();
+
+            // If Type is primitive then use BasicTypeConverter
+            if (destinationType.IsPrimitiveSystemType() && !destinationType.IsIEnumerableType())
+            {
+                return BasicTypeConverter(destinationType, sourceObj);
+            }
+
+            // Instantiate destination object if it is null
+            _result = destinationObj ?? _destinationType.Instantiate();
             
+            _mappingDictionary = MappingDictionary();
+
             _mappingDictionary.ForEach(x =>
             {
                 var value = GetPropertyValue(x.Value);
@@ -46,7 +60,11 @@ namespace DynamicMap.BaseMapper
                     value = LoopBackMapper(x.Key.PropertyType, x.Value.PropertyType, value);
                 }
 
-                SetPropertyValue(x.Key, value);
+                // No setting values when running on merge mode and value was null
+                if (value != null || _mappingMode != MappingMode.Merge)
+                {
+                    SetPropertyValue(x.Key, value);
+                }
             });
 
             return _result;
@@ -190,6 +208,6 @@ namespace DynamicMap.BaseMapper
         /// <param name="sourceType"></param>
         /// <param name="sourceObj"></param>
         /// <returns></returns>
-        public virtual object LoopBackMapper(Type destinationType, Type sourceType, object sourceObj) => DynamicMap.GetDynamicMapBuilder().RecursiveMap(destinationType, sourceType, sourceObj);
+        public virtual object LoopBackMapper(Type destinationType, Type sourceType, object sourceObj) => DynamicMap.GetDynamicMapBuilder().RecursiveMap(destinationType, sourceType, sourceObj, _mappingMode);
     }
 }

@@ -15,14 +15,14 @@ namespace DynamicMap.Extensions
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool IsSystemType(this Type type) => type.Namespace.StartsWith("System");
+        public static bool IsSystemType(this Type type) => type.Namespace != null && type.Namespace.StartsWith("System");
 
         /// <summary>
         /// Returns true if type is IEnumerable type
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static bool IsIEnumerableType(this Type type) => type.Namespace.StartsWith("System.Collections");
+        public static bool IsIEnumerableType(this Type type) => type.Namespace != null && type.Namespace.StartsWith("System.Collections");
 
         /// <summary>
         /// Instantiates an object given dynamically defined type
@@ -62,5 +62,23 @@ namespace DynamicMap.Extensions
         /// <returns></returns>
         public static bool IsPrimitiveSystemType(this Type type) => type.IsPrimitive || type.IsValueType || type == typeof(string)
                                                                     || type.IsIEnumerableType() && type.GetGenericType().IsPrimitiveSystemType();
+
+        /// <summary>
+        /// Checks whether if type is dictionary or not
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="keyType"></param>
+        /// <param name="valueType"></param>
+        /// <returns></returns>
+        public static bool IsDictionaryType(this Type type, out Type keyType, out Type valueType)
+        {
+            var flag = type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>);
+
+            var args = type.GetGenericArguments();
+            keyType = args.FirstOrDefault();
+            valueType = args.LastOrDefault();
+
+            return flag;
+        }
     }
 }
